@@ -1,27 +1,30 @@
 package com.libgdx.skin.editor;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.libgdx.skin.editor.screen.WelcomeScreen;
+import com.libgdx.skin.editor.utils.LazyBitmapFont;
 
-public class EditorGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
+public class EditorGame extends Game {
+
+	FreeTypeFontGenerator fontGenerator;
+
 	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+	public void create() {
+		GlobalData.GdxGame = this;
+		LazyBitmapFont.setGlobalGenerator(fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf")));
+
+		setScreen(new WelcomeScreen());
 	}
 
 	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+	public void dispose() {
+		super.dispose();
+		fontGenerator.dispose();
+		if (screen != null) {
+			screen.dispose();
+		}
 	}
+
 }
