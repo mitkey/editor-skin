@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.libgdx.skin.editor.GlobalData;
 import com.libgdx.skin.editor.utils.LazyBitmapFont;
 
 /**
@@ -18,16 +19,13 @@ import com.libgdx.skin.editor.utils.LazyBitmapFont;
  */
 public abstract class GeneralScreen extends ScreenAdapter {
 
-	public static int GameWidth = 1280;
-	public static int GameHeight = 720;
-
 	Stage stage;
 	BitmapFont font;
 
 	@Override
 	public void show() {
 		super.show();
-		this.stage = new Stage(new StretchViewport(GameWidth, GameHeight));
+		this.stage = new Stage(new StretchViewport(GlobalData.WIDTH, GlobalData.HEIGHT));
 
 		initMonitor();
 

@@ -10,8 +10,9 @@ import com.badlogic.gdx.Game;
  */
 public class GlobalData {
 
-	public static final int WIDTH = 1280;
-	public static final int HEIGHT = 720;
+	public static final boolean HideTitleBar = false;
+	public static final int WIDTH = 1024;
+	public static final int HEIGHT = 576;
 
 	public static Game GdxGame;
 
