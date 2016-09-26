@@ -3,8 +3,8 @@ package com.libgdx.skin.editor.desktop;
 import org.lwjgl.LWJGLException;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.scenes.scene2d.ui.TooltipManager;
@@ -21,6 +21,7 @@ public class DesktopLauncher {
 		config.title = "Editor Skin Json";
 		config.width = GlobalData.WIDTH;
 		config.height = GlobalData.HEIGHT;
+		config.initialBackgroundColor = GlobalData.ColorBackground;
 		config.resizable = false;
 		config.vSyncEnabled = true;
 		config.samples = 8;// 抗锯齿
