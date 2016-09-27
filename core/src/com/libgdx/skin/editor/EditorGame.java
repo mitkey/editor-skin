@@ -16,7 +16,7 @@ public class EditorGame extends Game {
 	public void create() {
 		VisUI.load(SkinScale.X1);
 		GlobalData.game = this;
-		GlobalData.fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
+		GlobalData.fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal(Res.font));
 		GlobalData.skin = new Skin(Gdx.files.internal(Res.skinJson), new TextureAtlas(Res.skinAtlas));
 		LazyBitmapFont.setGlobalGenerator(GlobalData.fontGenerator);
 

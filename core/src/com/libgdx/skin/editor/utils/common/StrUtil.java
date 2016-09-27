@@ -40,32 +40,7 @@ public class StrUtil {
 	 * @return 是否为非空
 	 */
 	public static boolean isNotBlank(String str) {
-		return false == isBlank(str);
-	}
-
-	/**
-	 * 字符串是否为空，空的定义如下 1、为null <br>
-	 * 2、为""<br>
-	 * 
-	 * @param str
-	 *            被检测的字符串
-	 * @return 是否为空
-	 */
-	public static boolean isEmpty(String str) {
-		return str == null || str.length() == 0;
-	}
-
-	/**
-	 * 字符串是否为非空白 空白的定义如下： <br>
-	 * 1、不为null <br>
-	 * 2、不为""<br>
-	 * 
-	 * @param str
-	 *            被检测的字符串
-	 * @return 是否为非空
-	 */
-	public static boolean isNotEmpty(String str) {
-		return !isEmpty(str);
+		return !isBlank(str);
 	}
 
 	/**
@@ -87,7 +62,7 @@ public class StrUtil {
 	 * @return 转换后的字符串
 	 */
 	public static String emptyToNull(String str) {
-		return isEmpty(str) ? null : str;
+		return isBlank(str) ? null : str;
 	}
 
 	/**
@@ -99,7 +74,7 @@ public class StrUtil {
 	 */
 	public static boolean hasEmpty(String... strs) {
 		for (String str : strs) {
-			if (isEmpty(str)) {
+			if (isBlank(str)) {
 				return true;
 			}
 		}
@@ -137,7 +112,7 @@ public class StrUtil {
 
 	/** 去除重复字符 */
 	public static String cleanRepeatStr(String content) {
-		if (isEmpty(content)) {
+		if (isBlank(content)) {
 			return content;
 		}
 
@@ -502,7 +477,7 @@ public class StrUtil {
 	 * @return 是否非空相同
 	 */
 	public static boolean equalsNotEmpty(String str1, String str2) {
-		if (isEmpty(str1)) {
+		if (isBlank(str1)) {
 			return false;
 		}
 		return str1.equals(str2);
