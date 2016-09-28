@@ -7,12 +7,12 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.libgdx.skin.editor.GlobalData;
 import com.libgdx.skin.editor.Res;
-import com.libgdx.skin.editor.utils.MoveListener;
 import com.libgdx.skin.editor.utils.scene2d.CustomSkin;
 import com.libgdx.skin.editor.utils.scene2d.GeneralScreen;
+import com.libgdx.skin.editor.widget.StyleBar;
 
 /**
  * @作者 Mitkey
@@ -21,9 +21,12 @@ import com.libgdx.skin.editor.utils.scene2d.GeneralScreen;
  * @版本 xx
  */
 public class ProjectScreen extends GeneralScreen {
+	private static final String tag = ProjectScreen.class.getSimpleName();
+
+	public CustomSkin customSkin;
 
 	FileHandle project;
-	CustomSkin customSkin;
+	StyleBar styleBar;
 
 	public ProjectScreen(String projectName) {
 		project = GlobalData.getProject(projectName);
@@ -31,15 +34,19 @@ public class ProjectScreen extends GeneralScreen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 		super.show();
 		customSkin = new CustomSkin(project.child(Res.skinJson.split("/")[1]), new TextureAtlas(project.child(Res.skinAtlas.split("/")[1])));
 
-		Image image = new Image(customSkin.getDrawable("default"));
-		image.setPosition(200, 200);
-		image.addListener(new MoveListener(image));
-		stage().addActor(image);
+		// 根 group
+		Table tableRoot = new Table(customSkin);
+		tableRoot.setFillParent(true);
+		stage().addActor(tableRoot);
 
+		// 样式类型切换 bar
+		styleBar = new StyleBar(this);
+		tableRoot.add(styleBar).expandX().fillX().top();
+
+		// 用户输入监听
 		InputProcessor processor = new InputMultiplexer(stage(), new InputAdapter() {
 			@Override
 			public boolean keyDown(int keycode) {
@@ -51,6 +58,14 @@ public class ProjectScreen extends GeneralScreen {
 			}
 		});
 		Gdx.input.setInputProcessor(processor);
+
+		toggleStyle();
+	}
+
+	public void toggleStyle() {
+		Gdx.app.debug(tag, "toggle style type:" + styleBar.getSelectStyleType());
+
+		// TODO
 	}
 
 	@Override

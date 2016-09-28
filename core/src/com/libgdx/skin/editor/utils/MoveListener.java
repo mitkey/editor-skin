@@ -40,7 +40,12 @@ public class MoveListener extends DragListener {
 	float y;
 	boolean debug;
 
-	public MoveListener(Actor actor) {
+	public static <T extends Actor> T bindListener(T actor) {
+		actor.addListener(new MoveListener(actor));
+		return actor;
+	}
+
+	private MoveListener(Actor actor) {
 		this.actor = actor;
 		this.originX = actor.getOriginX();
 		this.originY = actor.getOriginY();
