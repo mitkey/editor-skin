@@ -87,18 +87,12 @@ public class WelcomeScreen extends GeneralScreen {
 					showNewDialog(skin);
 				}
 			});
-			tableButton.row().getTable().add(createTextButton("Import", skin, false)).getActor().addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					// TODO Auto-generated method stub
-					super.clicked(event, x, y);
-				}
-			});
 			tableButton.row().getTable().add(buttonOpen = createTextButton("Open", skin, true)).getActor().addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					// TODO Auto-generated method stub
 					super.clicked(event, x, y);
+					// 切换 screen
+					GlobalData.game.setScreen(new ProjectScreen(listProjects.getSelected()));
 				}
 			});
 			tableButton.row().getTable().add(buttonDelete = createTextButton("Delete", skin, true)).getActor().addListener(new ClickListener() {
@@ -164,10 +158,10 @@ public class WelcomeScreen extends GeneralScreen {
 					dialogText = "project name already existed!";
 				} else {
 					try {
+						// 复制文件
 						FileHandle project = GlobalData.getProject(input);
 						FileHandle projectRaw = project.child("raw");
 						projectRaw.mkdirs();
-
 						Gdx.files.internal("resources/default.fnt").copyTo(project);
 						Gdx.files.internal("resources/raw/check-off.png").copyTo(projectRaw);
 						Gdx.files.internal("resources/raw/check-on.png").copyTo(projectRaw);
@@ -219,6 +213,7 @@ public class WelcomeScreen extends GeneralScreen {
 			public void ok() {
 				String dialogText = "success";
 				try {
+					// 删除该项目
 					GlobalData.getProject(selectedProject).deleteDirectory();
 
 					notifyProjectLists();
