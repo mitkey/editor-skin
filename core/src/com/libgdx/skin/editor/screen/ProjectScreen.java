@@ -12,7 +12,11 @@ import com.libgdx.skin.editor.GlobalData;
 import com.libgdx.skin.editor.Res;
 import com.libgdx.skin.editor.utils.scene2d.CustomSkin;
 import com.libgdx.skin.editor.utils.scene2d.GeneralScreen;
+import com.libgdx.skin.editor.widget.OptionPanel;
+import com.libgdx.skin.editor.widget.PreviewOptionPanel;
+import com.libgdx.skin.editor.widget.PreviewPanel;
 import com.libgdx.skin.editor.widget.StyleBar;
+import com.libgdx.skin.editor.widget.StylePanel;
 
 /**
  * @作者 Mitkey
@@ -26,7 +30,12 @@ public class ProjectScreen extends GeneralScreen {
 	public CustomSkin customSkin;
 
 	FileHandle project;
+
 	StyleBar styleBar;
+	OptionPanel optionPanel;
+	PreviewPanel previewPanel;
+	StylePanel stylePanel;
+	PreviewOptionPanel previewOptionPanel;
 
 	public ProjectScreen(String projectName) {
 		project = GlobalData.getProject(projectName);
@@ -44,7 +53,27 @@ public class ProjectScreen extends GeneralScreen {
 
 		// 样式类型切换 bar
 		styleBar = new StyleBar(this);
-		tableRoot.add(styleBar).expandX().fillX().top();
+		tableRoot.add(styleBar).expandX().fillX().top().colspan(3).row();
+		// 选项面板
+		optionPanel = new OptionPanel(this);
+		tableRoot.add(optionPanel).expandY().fillY().left().width(GlobalData.WIDTH / 4);
+		// 预览面板
+		previewPanel = new PreviewPanel(this);
+		tableRoot.add(previewPanel).expand().fill();
+		// 右边上下两部分
+		{
+			Table tableRight = new Table(customSkin);
+			tableRight.defaults().expand().fill().uniform();
+			tableRoot.add(tableRight).width(GlobalData.WIDTH / 4).expandY().fillY().right();
+
+			// 样式面板
+			stylePanel = new StylePanel(this);
+			tableRight.add(stylePanel).row();
+
+			// 预览选项面板
+			previewOptionPanel = new PreviewOptionPanel(this);
+			tableRight.add(previewOptionPanel);
+		}
 
 		// 用户输入监听
 		InputProcessor processor = new InputMultiplexer(stage(), new InputAdapter() {
