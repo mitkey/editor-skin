@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.libgdx.skin.editor.GlobalData;
 import com.libgdx.skin.editor.screen.ProjectScreen;
 import com.libgdx.skin.editor.utils.scene2d.CustomSkin;
 
@@ -23,7 +24,7 @@ public class StyleBar extends Table {
 	ButtonGroup<Button> buttonGroup;
 
 	public StyleBar(ProjectScreen projectScreen) {
-		super(projectScreen.customSkin);
+		super(GlobalData.skin);
 		this.projectScreen = projectScreen;
 
 		left().defaults().expand().fill().uniform().pad(5).getTable().setBackground("default-pane");

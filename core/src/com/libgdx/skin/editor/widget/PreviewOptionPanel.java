@@ -1,7 +1,7 @@
 package com.libgdx.skin.editor.widget;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.libgdx.skin.editor.screen.ProjectScreen;
+import com.libgdx.skin.editor.GlobalData;
 
 /**
  * @作者 Mitkey
@@ -11,11 +11,8 @@ import com.libgdx.skin.editor.screen.ProjectScreen;
  */
 public class PreviewOptionPanel extends Table {
 
-	ProjectScreen projectScreen;
-
-	public PreviewOptionPanel(ProjectScreen projectScreen) {
-		super(projectScreen.customSkin);
-		this.projectScreen = projectScreen;
+	public PreviewOptionPanel() {
+		super(GlobalData.skin);
 
 		top().left().setBackground("default-pane");
 

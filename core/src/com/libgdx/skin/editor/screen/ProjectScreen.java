@@ -27,9 +27,8 @@ import com.libgdx.skin.editor.widget.StylePanel;
 public class ProjectScreen extends GeneralScreen {
 	private static final String tag = ProjectScreen.class.getSimpleName();
 
-	public CustomSkin customSkin;
-
 	FileHandle project;
+	CustomSkin customSkin;
 
 	StyleBar styleBar;
 	OptionPanel optionPanel;
@@ -47,7 +46,7 @@ public class ProjectScreen extends GeneralScreen {
 		customSkin = new CustomSkin(project.child(Res.skinJson.split("/")[1]), new TextureAtlas(project.child(Res.skinAtlas.split("/")[1])));
 
 		// 根 group
-		Table tableRoot = new Table(customSkin);
+		Table tableRoot = new Table();
 		tableRoot.setFillParent(true);
 		stage().addActor(tableRoot);
 
@@ -55,23 +54,23 @@ public class ProjectScreen extends GeneralScreen {
 		styleBar = new StyleBar(this);
 		tableRoot.add(styleBar).expandX().fillX().top().colspan(3).row();
 		// 选项面板
-		optionPanel = new OptionPanel(this);
+		optionPanel = new OptionPanel();
 		tableRoot.add(optionPanel).expandY().fillY().left().width(GlobalData.WIDTH / 4);
 		// 预览面板
-		previewPanel = new PreviewPanel(this);
+		previewPanel = new PreviewPanel();
 		tableRoot.add(previewPanel).expand().fill();
 		// 右边上下两部分
 		{
-			Table tableRight = new Table(customSkin);
+			Table tableRight = new Table();
 			tableRight.defaults().expand().fill().uniform();
 			tableRoot.add(tableRight).width(GlobalData.WIDTH / 4).expandY().fillY().right();
 
 			// 样式面板
-			stylePanel = new StylePanel(this);
+			stylePanel = new StylePanel();
 			tableRight.add(stylePanel).row();
 
 			// 预览选项面板
-			previewOptionPanel = new PreviewOptionPanel(this);
+			previewOptionPanel = new PreviewOptionPanel();
 			tableRight.add(previewOptionPanel);
 		}
 
