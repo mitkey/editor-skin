@@ -66,7 +66,17 @@ public class ProjectScreen extends GeneralScreen {
 			tableRoot.add(tableRight).width(GlobalData.WIDTH / 4).expandY().fillY().right();
 
 			// 样式面板
-			stylePanel = new StylePanel();
+			stylePanel = new StylePanel(customSkin) {
+				@Override
+				public void changeStyleNameSelect() {
+					super.changeStyleNameSelect();
+
+					optionPanel.toggleStyle(getSelectStyleObject());
+
+					// TODO Auto-generated method stub
+					// 调用其他 panel 的 toggle style 方法
+				}
+			};
 			tableRight.add(stylePanel).row();
 
 			// 预览选项面板
@@ -91,7 +101,19 @@ public class ProjectScreen extends GeneralScreen {
 	}
 
 	public void toggleStyle() {
-		Gdx.app.debug(tag, "toggle style type:" + styleBar.getSelectStyleType());
+		String selectStyleType = styleBar.getSelectStyleType();
+		Gdx.app.debug(tag, "toggle style type:" + selectStyleType);
+
+		Class<?> styleClass;
+		try {
+			styleClass = Class.forName("com.badlogic.gdx.scenes.scene2d.ui." + selectStyleType + "$" + selectStyleType + "Style");
+		} catch (ClassNotFoundException e) {
+			Gdx.app.error(tag, "can find style class", e);
+			return;
+		}
+
+		// style name list 改变
+		stylePanel.changeStyleType(styleClass);
 
 		// TODO
 	}

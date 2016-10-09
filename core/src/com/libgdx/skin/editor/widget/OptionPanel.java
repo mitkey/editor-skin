@@ -23,7 +23,7 @@ public class OptionPanel extends Table {
 		defaults().pad(5);
 
 		// 操作面板说明
-		add("Style Property", "title").center().row();
+		add("Style Property", "title").row();
 
 		Skin skin = getSkin();
 
@@ -37,7 +37,7 @@ public class OptionPanel extends Table {
 		add(scrollPane).expand().fill().row();;
 	}
 
-	public void toggleStyle() {
+	public void toggleStyle(Object curSelectStyleObject) {
 		// TODO Auto-generated constructor stub
 	}
 
