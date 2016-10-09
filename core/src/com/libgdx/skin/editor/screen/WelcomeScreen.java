@@ -80,39 +80,34 @@ public class WelcomeScreen extends GeneralScreen {
 		{
 			Table tableButton = new Table(skin);
 			tableButton.left().defaults().left().size(140, 30).fill().expand();
-			tableButton.add(createTextButton("New", skin, false)).padTop(20).getActor().addListener(new ClickListener() {
+			tableButton.add(createTextButton("New", skin, false)).padTop(20).getActor().addListener(new ChangeListener() {
 				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					super.clicked(event, x, y);
+				public void changed(ChangeEvent event, Actor actor) {
 					showNewDialog(skin);
 				}
 			});
-			tableButton.row().getTable().add(buttonOpen = createTextButton("Open", skin, true)).getActor().addListener(new ClickListener() {
+			tableButton.row().getTable().add(buttonOpen = createTextButton("Open", skin, true)).getActor().addListener(new ChangeListener() {
 				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					super.clicked(event, x, y);
+				public void changed(ChangeEvent event, Actor actor) {
 					// 切换 screen
 					GlobalData.game.setScreen(new ProjectScreen(listProjects.getSelected()));
 				}
 			});
-			tableButton.row().getTable().add(buttonDelete = createTextButton("Delete", skin, true)).getActor().addListener(new ClickListener() {
+			tableButton.row().getTable().add(buttonDelete = createTextButton("Delete", skin, true)).getActor().addListener(new ChangeListener() {
 				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					super.clicked(event, x, y);
+				public void changed(ChangeEvent event, Actor actor) {
 					showDeleteDialog(skin);
 				}
 			});
-			tableButton.row().getTable().add(buttonRename = createTextButton("Rename", skin, true)).getActor().addListener(new ClickListener() {
+			tableButton.row().getTable().add(buttonRename = createTextButton("Rename", skin, true)).getActor().addListener(new ChangeListener() {
 				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					super.clicked(event, x, y);
+				public void changed(ChangeEvent event, Actor actor) {
 					showRenameDialog(skin);
 				}
 			});
-			tableButton.row().getTable().add(createTextButton("Exit", skin, false)).getActor().addListener(new ClickListener() {
+			tableButton.row().getTable().add(createTextButton("Exit", skin, false)).getActor().addListener(new ChangeListener() {
 				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					super.clicked(event, x, y);
+				public void changed(ChangeEvent event, Actor actor) {
 					Gdx.app.exit();
 				}
 			});
