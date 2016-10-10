@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.libgdx.skin.editor.GlobalData;
 import com.libgdx.skin.editor.Res;
+import com.libgdx.skin.editor.property.editor.actor.builder.PropertyEditorBuilder.OnEditorCall;
 import com.libgdx.skin.editor.utils.scene2d.CustomSkin;
 import com.libgdx.skin.editor.utils.scene2d.GeneralScreen;
 import com.libgdx.skin.editor.widget.OptionPanel;
@@ -54,8 +55,14 @@ public class ProjectScreen extends GeneralScreen {
 		styleBar = new StyleBar(this);
 		tableRoot.add(styleBar).expandX().fillX().top().colspan(3).row();
 		// 选项面板
-		optionPanel = new OptionPanel();
-		tableRoot.add(optionPanel).expandY().fillY().left().width(GlobalData.WIDTH / 4);
+		optionPanel = new OptionPanel(new OnEditorCall() {
+			@Override
+			public void call() {
+				// TODO Auto-generated method stub
+				// 调用其他 panel 中绘制信息。如 previewPanel 或 previewOptionPanel
+			}
+		});
+		tableRoot.add(optionPanel).expandY().fillY().left().width(420);
 		// 预览面板
 		previewPanel = new PreviewPanel();
 		tableRoot.add(previewPanel).expand().fill();
@@ -70,8 +77,7 @@ public class ProjectScreen extends GeneralScreen {
 				@Override
 				public void changeStyleNameSelect() {
 					super.changeStyleNameSelect();
-
-					optionPanel.toggleStyle(getSelectStyleObject());
+					optionPanel.toggleStyle(customSkin, getSelectStyleObject());
 
 					// TODO Auto-generated method stub
 					// 调用其他 panel 的 toggle style 方法
@@ -116,18 +122,6 @@ public class ProjectScreen extends GeneralScreen {
 		stylePanel.changeStyleType(styleClass);
 
 		// TODO
-	}
-
-	@Override
-	protected void update(float delta) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void draw(float delta) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
