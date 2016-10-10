@@ -19,8 +19,9 @@ public class DesktopLauncher {
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Editor Skin Json";
-		config.width = GlobalData.WIDTH;
-		config.height = GlobalData.HEIGHT;
+		config.width = GlobalData.Desk_WIDTH;
+		config.height = GlobalData.Desk_HEIGHT;
+		config.y = 5;
 		config.initialBackgroundColor = GlobalData.ColorBackground;
 		config.resizable = false;
 		config.vSyncEnabled = true;

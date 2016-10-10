@@ -1,6 +1,8 @@
 package com.libgdx.skin.editor.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 import com.badlogic.gdx.utils.Array;
 import com.libgdx.skin.editor.GlobalData;
 import com.libgdx.skin.editor.utils.common.StrUtil;
@@ -65,6 +68,9 @@ public class WelcomeScreen extends GeneralScreen {
 				}
 			});
 			final ScrollPane scrollPane = new ScrollPane(listProjects, skin);
+			scrollPane.setFadeScrollBars(false);
+			scrollPane.setFlickScroll(false);
+			scrollPane.setScrollingDisabled(true, false);
 			stage().addListener(new ClickListener() {
 				@Override
 				public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -72,7 +78,7 @@ public class WelcomeScreen extends GeneralScreen {
 					stage().setScrollFocus(scrollPane);
 				}
 			});
-			tableLeft.add(scrollPane).size(400, 300);
+			tableLeft.add(scrollPane).size(500, 400);
 
 			tableRoot.add(tableLeft).left();
 		}
@@ -119,7 +125,34 @@ public class WelcomeScreen extends GeneralScreen {
 		tableRoot.setPosition(GlobalData.WIDTH / 2 - tableRoot.getWidth() / 2, GlobalData.HEIGHT / 2 - tableRoot.getHeight() / 2);
 		stage().addActor(tableRoot);
 
-		InputProcessor processor = new InputMultiplexer(stage());
+		InputProcessor processor = new InputMultiplexer(stage(), new InputAdapter() {
+			@Override
+			public boolean keyDown(int keycode) {
+				if (keycode == Keys.ESCAPE) {
+					Gdx.app.exit();
+				}
+				if (UIUtils.ctrl()) {
+					switch (keycode) {
+						case Keys.D :
+							if (!buttonDelete.isDisabled()) {
+								showDeleteDialog(skin);
+							}
+							break;
+						case Keys.R :
+							if (!buttonRename.isDisabled()) {
+								showRenameDialog(skin);
+							}
+							break;
+						case Keys.N :
+							showNewDialog(skin);
+							break;
+						default :
+							break;
+					}
+				}
+				return false;
+			}
+		});
 		Gdx.input.setInputProcessor(processor);
 
 		notifyProjectLists();
@@ -251,14 +284,6 @@ public class WelcomeScreen extends GeneralScreen {
 				Dialogs.showOkDialog(stage(), "rename project name result", dialogText, skin);
 			}
 		});
-	}
-
-	@Override
-	protected void update(float delta) {
-	}
-
-	@Override
-	protected void draw(float delta) {
 	}
 
 	@Override

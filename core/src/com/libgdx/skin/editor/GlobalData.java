@@ -24,8 +24,10 @@ public final class GlobalData {
 
 	public static final boolean HideTitleBar = false;
 	public static final Color ColorBackground = new Color(0x25252AFF);
-	public static final int WIDTH = 1024;
-	public static final int HEIGHT = 576;
+	public static final int WIDTH = 1280;
+	public static final int HEIGHT = 720;
+	public static final int Desk_WIDTH = 1156;
+	public static final int Desk_HEIGHT = 650;
 
 	public static final String projectSaveDir = "gdx-editor-skin-workspace";
 	public static final FileType projectSaveFileType = FileType.External;
@@ -34,6 +36,7 @@ public final class GlobalData {
 	public static final String projectSkinAtlas = "uiskin.atlas";
 	public static final String projectSkinRaw = "raw";
 
+	public static boolean monitorView = false;
 	public static Game game;
 	public static FreeTypeFontGenerator fontGenerator;
 	public static Skin skin;
