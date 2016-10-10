@@ -36,7 +36,7 @@ public final class GlobalData {
 	public static final String projectSkinAtlas = "uiskin.atlas";
 	public static final String projectSkinRaw = "raw";
 
-	public static boolean monitorView = false;
+	public static OnMonitor onMonitor;
 	public static Game game;
 	public static FreeTypeFontGenerator fontGenerator;
 	public static Skin skin;
@@ -97,6 +97,10 @@ public final class GlobalData {
 			fontGenerator.dispose();
 			fontGenerator = null;
 		}
+	}
+
+	public static interface OnMonitor {
+		void change(int fpsNum, float heapNum, float nativeNum);
 	}
 
 }
