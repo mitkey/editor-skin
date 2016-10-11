@@ -1,6 +1,8 @@
 package com.libgdx.skin.editor.utils.common;
 
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -560,9 +562,7 @@ public class StrUtil {
 		return sb.toString();
 	}
 
-	/**
-	 * 转换为Double类型
-	 */
+	/** 转换为Double类型 */
 	public static Double toDouble(Object val) {
 		if (val == null) {
 			return 0D;
@@ -574,25 +574,32 @@ public class StrUtil {
 		}
 	}
 
-	/**
-	 * 转换为Float类型
-	 */
+	/** 转换为Float类型 */
 	public static Float toFloat(Object val) {
 		return toDouble(val).floatValue();
 	}
 
-	/**
-	 * 转换为Long类型
-	 */
+	/** 转换为Long类型 */
 	public static Long toLong(Object val) {
 		return toDouble(val).longValue();
 	}
 
-	/**
-	 * 转换为Integer类型
-	 */
+	/** 转换为Integer类型 */
 	public static Integer toInteger(Object val) {
 		return toLong(val).intValue();
+	}
+
+	/** 转换为指定精度的 float（即限定位数），循环内连续多次多时使用效率高 */
+	public static float toLimitDecimalFloat(double num, int newScale) {
+		BigDecimal bigDecimal = new BigDecimal(num);
+		return bigDecimal.setScale(newScale, BigDecimal.ROUND_HALF_UP).floatValue();
+	}
+
+	/** 转换为指定精度的 float（即限定位数），连续次数少时使用效率高 */
+	public static String toLimitDecimalFloatStr(double number, int newScale) {
+		NumberFormat nf = NumberFormat.getNumberInstance();
+		nf.setMaximumFractionDigits(newScale);
+		return nf.format(number);
 	}
 
 }

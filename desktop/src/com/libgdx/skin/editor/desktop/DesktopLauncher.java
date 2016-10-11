@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TooltipManager;
 import com.libgdx.skin.editor.EditorGame;
 import com.libgdx.skin.editor.GlobalData;
 import com.libgdx.skin.editor.GlobalData.OnMonitor;
+import com.libgdx.skin.editor.utils.common.StrUtil;
 
 public class DesktopLauncher {
 	public static void main(String[] arg) throws LWJGLException {
@@ -30,9 +31,11 @@ public class DesktopLauncher {
 		config.samples = 8;// 抗锯齿
 		config.addIcon("icon.png", FileType.Internal);
 		GlobalData.onMonitor = new OnMonitor() {
-			String format = "%s --------> fps:【%s】====heap:【%s】==== native:【%s】";
+			String format = "%s --------> FPS:%s    H:%sm    N:%sm";
 			@Override
 			public void change(int fpsNum, float heapNum, float nativeNum) {
+				heapNum = StrUtil.toLimitDecimalFloat(heapNum, 2);
+				nativeNum = StrUtil.toLimitDecimalFloat(nativeNum, 2);
 				Display.setTitle(String.format(format, config.title, fpsNum, heapNum, nativeNum));
 			}
 		};
