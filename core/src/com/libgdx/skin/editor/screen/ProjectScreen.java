@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.libgdx.skin.editor.GlobalData;
 import com.libgdx.skin.editor.Res;
+import com.libgdx.skin.editor.property.editor.actor.builder.PropertyEditorBuilder;
 import com.libgdx.skin.editor.property.editor.actor.builder.PropertyEditorBuilder.OnEditorCall;
 import com.libgdx.skin.editor.utils.scene2d.CustomSkin;
 import com.libgdx.skin.editor.utils.scene2d.GeneralScreen;
@@ -127,6 +128,7 @@ public class ProjectScreen extends GeneralScreen {
 	@Override
 	public void dispose() {
 		super.dispose();
+		PropertyEditorBuilder.dispose();
 		if (customSkin != null) {
 			customSkin.dispose();
 			customSkin = null;
