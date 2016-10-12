@@ -14,7 +14,7 @@ import com.libgdx.skin.editor.GlobalData;
  * @类说明:
  * @版本 xx
  */
-public class BaseOptionWidget extends Table {
+public abstract class BaseOptionWidget extends Table {
 
 	protected Table tableProperty;
 
