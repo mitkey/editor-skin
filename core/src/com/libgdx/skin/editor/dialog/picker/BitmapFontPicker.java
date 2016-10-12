@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -30,32 +28,16 @@ public class BitmapFontPicker extends BasePickerDialog {
 
 	private static final String tag = BitmapFontPicker.class.getSimpleName();
 	private static final String textPreview = "Sample Text Content";
-	private static final String TITLE = "Bitmap Font Picker";
-
-	Table tableFonts;
 
 	public BitmapFontPicker(CustomSkin projectSkin) {
 		this(projectSkin, null, null, null);
 	}
 
 	public BitmapFontPicker(CustomSkin projectSkin, Object styleObject, Field field, OnEditorCall onEditorCall) {
-		super(TITLE, projectSkin, styleObject, field, onEditorCall);
-
-		Skin skin = getSkin();
-		// 字体内容
-		tableFonts = new Table(skin);
-		tableFonts.left().top().pad(10).defaults().left().pad(5);
-		this.initialFont();
-		// 包裹内容的滚动层
-		ScrollPane scrollPane = new ScrollPane(tableFonts, skin);
-		scrollPane.setScrollingDisabled(true, false);
-		scrollPane.setFadeScrollBars(false);
-		scrollPane.setScrollbarsOnTop(true);
-		scrollPane.setFlickScroll(false);
-		getContentTable().add(scrollPane).expand().fill().pad(20);
+		super("Bitmap Font Picker", projectSkin, styleObject, field, onEditorCall);
 	}
 
-	private void initialFont() {
+	protected void initialWidget() {
 		ObjectMap<String, BitmapFont> objectMap = projectSkin.getAll(BitmapFont.class);
 		if (objectMap == null || objectMap.size == 0) {
 			tableFonts.add("bitmap font empty", "error");
@@ -122,7 +104,7 @@ public class BitmapFontPicker extends BasePickerDialog {
 							// 从 skin 中移除
 							objectMap.remove(styleName);
 							// 重新渲染
-							initialFont();
+							initialWidget();
 						}
 						Dialogs.showOkDialog(getStage(), "Delete Bitmap Font Result", textTemp, skin);
 					}
