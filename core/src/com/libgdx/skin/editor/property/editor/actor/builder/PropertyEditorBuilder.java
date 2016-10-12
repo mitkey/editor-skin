@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -91,6 +92,22 @@ public abstract class PropertyEditorBuilder {
 		selectBox.setSelected(selectItem == null ? DefaultSelectItem : selectItem);
 		return selectBox;
 	}
+	protected SelectBox<String> addSelectBoxListener(Object styleObject, Field field, OnEditorCall onEditorCall, ObjectMap<String, ?> objectMap, SelectBox<String> selectBox) {
+		selectBox.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				String selected = selectBox.getSelected();
+				try {
+					field.set(styleObject, DefaultSelectItem.equals(selected) ? null : objectMap.get(selected));
+				} catch (Exception e) {
+					Gdx.app.error("select " + fieldType.getSimpleName() + " style", "error", e);
+					Dialogs.showOkDialog(selectBox.getStage(), "Select " + fieldType.getName() + " Style Result", "error", GlobalData.skin);
+				}
+				onEditorCall.call();
+			}
+		});
+		return selectBox;
+	}
 
 	public static final Actor generationEditorActor(CustomSkin projectSkin, Object styleObject, Field field, OnEditorCall onEditorCall) throws ReflectionException {
 		PropertyEditorBuilder editorBuilder = BUILDER_MAP.get(field.getType());
@@ -118,12 +135,9 @@ public abstract class PropertyEditorBuilder {
 		}
 		@Override
 		public Actor buildActor(CustomSkin projectSkin, Object styleObject, Field field, OnEditorCall onEditorCall) throws ReflectionException {
-			// TODO use onEditorCall
 			ImageTextButton imageTextButton = generationImageTextButton("=un support type=", false);
-
-			ImageTextButtonStyle buttonStyle = new ImageTextButtonStyle(imageTextButton.getStyle());
-			buttonStyle.fontColor = Color.RED;
-			imageTextButton.setStyle(buttonStyle);
+			imageTextButton.setDisabled(false);
+			imageTextButton.setTouchable(Touchable.disabled);
 			return imageTextButton;
 		}
 	}
@@ -167,9 +181,7 @@ public abstract class PropertyEditorBuilder {
 
 			String selectItem = projectSkin.resolveObjectName(fieldType, field.get(styleObject));
 			SelectBox<String> selectBox = generationSelectBox(noList ? null : objectMap.keys().toArray(), selectItem);
-
-			// TODO use onEditorCall
-			return selectBox;
+			return addSelectBoxListener(styleObject, field, onEditorCall, objectMap, selectBox);
 		}
 	}
 
@@ -185,9 +197,7 @@ public abstract class PropertyEditorBuilder {
 
 			String selectItem = projectSkin.resolveObjectName(fieldType, field.get(styleObject));
 			SelectBox<String> selectBox = generationSelectBox(noList ? null : objectMap.keys().toArray(), selectItem);
-
-			// TODO use onEditorCall
-			return selectBox;
+			return addSelectBoxListener(styleObject, field, onEditorCall, objectMap, selectBox);
 		}
 	}
 
@@ -203,9 +213,7 @@ public abstract class PropertyEditorBuilder {
 
 			String selectItem = projectSkin.resolveObjectName(fieldType, field.get(styleObject));
 			SelectBox<String> selectBox = generationSelectBox(noList ? null : objectMap.keys().toArray(), selectItem);
-
-			// TODO use onEditorCall
-			return selectBox;
+			return addSelectBoxListener(styleObject, field, onEditorCall, objectMap, selectBox);
 		}
 	}
 
@@ -319,4 +327,5 @@ public abstract class PropertyEditorBuilder {
 	public static interface OnEditorCall {
 		void call();
 	}
+
 }
