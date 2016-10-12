@@ -38,9 +38,10 @@ public class BitmapFontPicker extends BasePickerDialog {
 	}
 
 	protected void initialWidget() {
+		tableFonts.clear();
 		ObjectMap<String, BitmapFont> objectMap = projectSkin.getAll(BitmapFont.class);
 		if (objectMap == null || objectMap.size == 0) {
-			tableFonts.add("bitmap font empty", "error");
+			tableFonts.add("bitmap font collection is empty", "error");
 		} else {
 			BitmapFont useBitmapFont;
 			try {
@@ -74,7 +75,7 @@ public class BitmapFontPicker extends BasePickerDialog {
 								field.set(styleObject, bitmapFont);
 							} catch (ReflectionException e) {
 								Gdx.app.error(tag, "set styleObject error", e);
-								Dialogs.showOkDialog(getStage(), "Select Bitmap Font Result", "Error", getSkin());
+								Dialogs.showOkDialog(getStage(), "Select Bitmap Font Result", "Error", skin);
 							}
 							onEditorCall.call();
 							hide();
@@ -85,30 +86,28 @@ public class BitmapFontPicker extends BasePickerDialog {
 				tableFonts.add(new TextButton("Remove", skin)).expandX().getActor().addListener(new ChangeListener() {
 					@Override
 					public void changed(ChangeEvent event, Actor actor) {
-						String title = "Delete Bitmap Font Result";
+						String title = "Delete Bitmap Font";
 						String text = "You are sure you want to delete \nthis bitmap font(styleName is " + styleName + ")?";
 						Dialogs.showOkCancelDialog(getStage(), title, text, skin, new OkCancelDialogListener() {
 							@Override
 							public void ok() {
-								dealWidth();
+								String textTemp = "Success";
+								if (CustomSkin.isResInUse(projectSkin, bitmapFont)) {
+									textTemp = "Bitmap font already in use!";
+								} else {
+									// 删除文件
+									bitmapFont.getData().fontFile.delete();
+									// 从 skin 中移除
+									objectMap.remove(styleName);
+									// 重新渲染
+									initialWidget();
+								}
+								Dialogs.showOkDialog(getStage(), "Delete Bitmap Font Result", textTemp, skin);
 							}
 						});
 					}
-					private void dealWidth() {
-						String textTemp = "Success";
-						if (CustomSkin.isResInUse(projectSkin, bitmapFont)) {
-							textTemp = "Bitmap font already in use!";
-						} else {
-							// 删除文件
-							bitmapFont.getData().fontFile.delete();
-							// 从 skin 中移除
-							objectMap.remove(styleName);
-							// 重新渲染
-							initialWidget();
-						}
-						Dialogs.showOkDialog(getStage(), "Delete Bitmap Font Result", textTemp, skin);
-					}
 				});
+				tableFonts.row();
 			}
 		}
 	}

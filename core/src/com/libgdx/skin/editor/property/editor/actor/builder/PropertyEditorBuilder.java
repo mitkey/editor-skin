@@ -28,6 +28,7 @@ import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.libgdx.skin.editor.GlobalData;
 import com.libgdx.skin.editor.dialog.picker.BitmapFontPicker;
+import com.libgdx.skin.editor.dialog.picker.ColorPicker;
 import com.libgdx.skin.editor.utils.common.StrUtil;
 import com.libgdx.skin.editor.utils.scene2d.CustomSkin;
 import com.libgdx.skin.editor.utils.scene2d.Dialogs;
@@ -115,6 +116,23 @@ public abstract class PropertyEditorBuilder {
 			editorBuilder = BUILDER_MAP.get(Object.class);
 		}
 		return editorBuilder.buildActor(projectSkin, styleObject, field, onEditorCall);
+	}
+
+	public static Texture createColorPixmap(Color color) {
+		Texture texture;
+		if (cachesColorPixmapMaps.containsKey(color)) {
+			texture = cachesColorPixmapMaps.get(color);
+		} else {
+			Pixmap pixmap = new Pixmap(18, 18, Pixmap.Format.RGBA8888);
+			pixmap.setColor(color);
+			pixmap.fill();
+			pixmap.setColor(Color.BLACK);
+			pixmap.drawRectangle(0, 0, 18, 18);
+			cachesColorPixmapMaps.put(color, texture = new Texture(pixmap));
+			pixmap.dispose();
+			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		}
+		return texture;
 	}
 
 	public static void dispose() {
@@ -302,25 +320,13 @@ public abstract class PropertyEditorBuilder {
 				buttonStyle.imageUp = new SpriteDrawable(new Sprite(createColorPixmap(color)));
 				imageTextButton.setStyle(buttonStyle);
 			}
-
-			// TODO use onEditorCall
+			imageTextButton.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					new ColorPicker(projectSkin, styleObject, field, onEditorCall).show(imageTextButton.getStage());
+				}
+			});
 			return imageTextButton;
-		}
-		private Texture createColorPixmap(Color color) {
-			Texture texture;
-			if (cachesColorPixmapMaps.containsKey(color)) {
-				texture = cachesColorPixmapMaps.get(color);
-			} else {
-				Pixmap pixmap = new Pixmap(18, 18, Pixmap.Format.RGBA8888);
-				pixmap.setColor(color);
-				pixmap.fill();
-				pixmap.setColor(Color.BLACK);
-				pixmap.drawRectangle(0, 0, 18, 18);
-				cachesColorPixmapMaps.put(color, texture = new Texture(pixmap));
-				pixmap.dispose();
-				texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-			}
-			return texture;
 		}
 	}
 
