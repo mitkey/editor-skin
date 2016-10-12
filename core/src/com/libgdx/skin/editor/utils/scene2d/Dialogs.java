@@ -1,11 +1,7 @@
 package com.libgdx.skin.editor.utils.scene2d;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -21,18 +17,14 @@ import com.libgdx.skin.editor.GlobalData;
 public class Dialogs {
 
 	public static Dialog showOkDialog(Stage stage, String title, String text, Skin skin) {
-		Dialog dialog = new Dialog(title, skin);
+		Dialog dialog = new SimpleDialog(title, skin);
 		dialog.text(text).button("confirm", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true);
-		dialog.show(stage, sequence(Actions.fadeIn(0.4f, Interpolation.fade)));
-
 		dialog.getButtonTable().pad(20);
-
-		setDialogSizeAndCenter(stage, dialog);
-		return dialog;
+		return dialog.show(stage);
 	}
 
 	public static Dialog showOkCancelDialog(Stage stage, String title, String text, Skin skin, final OkCancelDialogListener listener) {
-		Dialog dialog = new Dialog(title, skin) {
+		Dialog dialog = new SimpleDialog(title, skin) {
 			@Override
 			protected void result(Object object) {
 				super.result(object);
@@ -42,12 +34,8 @@ public class Dialogs {
 			}
 		};
 		dialog.text(text).button("confirm", true).key(Keys.ENTER, true).button("cancel", false).key(Keys.ESCAPE, false);
-		dialog.show(stage, sequence(Actions.fadeIn(0.4f, Interpolation.fade)));
-
 		dialog.getButtonTable().pad(20);
-
-		setDialogSizeAndCenter(stage, dialog);
-		return dialog;
+		return dialog.show(stage);
 	}
 
 	public static Dialog showInputDialog(Stage stage, String title, String fieldName, String fieldValue, Skin skin, InputDialogListener inputDialogListener) {
@@ -56,13 +44,12 @@ public class Dialogs {
 
 	public static Dialog showInputDialog(Stage stage, String title, String fieldName, String fieldValue, Skin skin, //
 			final TextFieldFilter textFieldFilter, final InputDialogListener inputDialogListener) {
-
 		final TextField textField = new TextField(fieldValue, skin);
 		textField.setTextFieldFilter(textFieldFilter);
 		textField.setMessageText("please input content");
 		textField.setCursorPosition(fieldValue.length());
 
-		Dialog dialog = new Dialog(title, skin) {
+		Dialog dialog = new SimpleDialog(title, skin) {
 			@Override
 			protected void result(Object object) {
 				super.result(object);
@@ -71,30 +58,28 @@ public class Dialogs {
 				}
 			}
 		};
-
 		dialog.getContentTable().add(fieldName + ":", "title").padRight(10);
 		dialog.getContentTable().add(textField);
 
 		dialog.button("confirm", true).key(Keys.ENTER, true).button("cancel", false).key(Keys.ESCAPE, false);
-		dialog.show(stage, sequence(Actions.fadeIn(0.4f, Interpolation.fade)));
-
 		dialog.getButtonTable().pad(20);
-
-		setDialogSizeAndCenter(stage, dialog);
-
 		stage.setKeyboardFocus(textField);
-		return dialog;
+		return dialog.show(stage);
 	}
 
-	// 该方法必须在 dialog show 方法调用之后使用
-	private static void setDialogSizeAndCenter(Stage stage, Dialog dialog) {
-		if (dialog.getWidth() < GlobalData.WIDTH / 3) {
-			dialog.setWidth(GlobalData.WIDTH / 3);
+	private static class SimpleDialog extends Dialog {
+		public SimpleDialog(String title, Skin skin) {
+			super(title, skin);
+			getColor().a = 0;
 		}
-		if (dialog.getHeight() < GlobalData.HEIGHT / 3) {
-			dialog.setHeight(GlobalData.HEIGHT / 3);
+		@Override
+		public float getPrefWidth() {
+			return GlobalData.WIDTH / 3;
 		}
-		dialog.setPosition(Math.round((stage.getWidth() - dialog.getWidth()) / 2), Math.round((stage.getHeight() - dialog.getHeight()) / 2));
+		@Override
+		public float getPrefHeight() {
+			return GlobalData.HEIGHT / 3;
+		}
 	}
 
 	public interface InputDialogListener {
