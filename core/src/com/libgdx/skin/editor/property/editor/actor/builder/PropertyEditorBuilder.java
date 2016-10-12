@@ -170,7 +170,7 @@ public abstract class PropertyEditorBuilder {
 			Drawable drawable = (Drawable) field.get(styleObject);
 			ImageTextButton imageTextButton;
 			if (drawable == null) {
-				imageTextButton = generationImageTextButton("not set", false);
+				imageTextButton = generationImageTextButton("drawable not set", false);
 			} else {
 				imageTextButton = generationImageTextButton(projectSkin.resolveObjectName(fieldType, drawable), true);
 				drawable = projectSkin.newDrawable(drawable);
@@ -255,7 +255,7 @@ public abstract class PropertyEditorBuilder {
 					InputDialogListener inputDialogListener = new InputDialogListener() {
 						@Override
 						public void finished(String input) {
-							float inputFloat = StrUtil.isNotBlank(input) ? Float.valueOf(value) : 0;
+							float inputFloat = StrUtil.isNotBlank(input) ? Float.valueOf(input) : 0;
 							try {
 								field.set(styleObject, inputFloat);
 							} catch (ReflectionException e) {
@@ -282,7 +282,7 @@ public abstract class PropertyEditorBuilder {
 			BitmapFont font = (BitmapFont) field.get(styleObject);
 			ImageTextButton imageTextButton;
 			if (font == null) {
-				imageTextButton = generationImageTextButton("not set", false);
+				imageTextButton = generationImageTextButton("bitmap font not set", false);
 			} else {
 				imageTextButton = generationImageTextButton(projectSkin.resolveObjectName(BitmapFont.class, font), true);
 
@@ -310,7 +310,7 @@ public abstract class PropertyEditorBuilder {
 			Color color = (Color) field.get(styleObject);
 			ImageTextButton imageTextButton;
 			if (color == null) {
-				imageTextButton = generationImageTextButton("not set", false);
+				imageTextButton = generationImageTextButton("color not set", false);
 			} else {
 				String text = projectSkin.resolveObjectName(Color.class, color);
 				text += "(" + color.toString() + ")";
