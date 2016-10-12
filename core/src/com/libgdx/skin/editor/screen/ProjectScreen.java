@@ -37,6 +37,14 @@ public class ProjectScreen extends GeneralScreen {
 	StylePanel stylePanel;
 	PreviewOptionPanel previewOptionPanel;
 
+	OnEditorCall onEditorCall = new OnEditorCall() {
+		@Override
+		public void call() {
+			optionPanel.toggleStyle(customSkin, stylePanel.getSelectStyleObject());
+			// TODO 调用其他 panel 中绘制信息。如 previewPanel 或 previewOptionPanel
+		}
+	};
+
 	public ProjectScreen(String projectName) {
 		GlobalData.projectFileHandle = GlobalData.getProject(projectName);
 	}
@@ -58,13 +66,7 @@ public class ProjectScreen extends GeneralScreen {
 		styleBar = new StyleBar(this);
 		tableRoot.add(styleBar).expandX().fillX().top().colspan(3).row();
 		// 选项面板
-		optionPanel = new OptionPanel(new OnEditorCall() {
-			@Override
-			public void call() {
-				// TODO Auto-generated method stub
-				// 调用其他 panel 中绘制信息。如 previewPanel 或 previewOptionPanel
-			}
-		});
+		optionPanel = new OptionPanel(onEditorCall);
 		tableRoot.add(optionPanel).expandY().fillY().left().width(420);
 		// 预览面板
 		previewPanel = new PreviewPanel();
@@ -74,20 +76,9 @@ public class ProjectScreen extends GeneralScreen {
 			Table tableRight = new Table();
 			tableRight.defaults().expand().fill().uniform();
 			tableRoot.add(tableRight).width(GlobalData.WIDTH / 4).expandY().fillY().right();
-
 			// 样式面板
-			stylePanel = new StylePanel(customSkin) {
-				@Override
-				public void changeStyleNameSelect() {
-					super.changeStyleNameSelect();
-					optionPanel.toggleStyle(customSkin, getSelectStyleObject());
-
-					// TODO Auto-generated method stub
-					// 调用其他 panel 的 toggle style 方法
-				}
-			};
+			stylePanel = new StylePanel(customSkin, onEditorCall);
 			tableRight.add(stylePanel).row();
-
 			// 预览选项面板
 			previewOptionPanel = new PreviewOptionPanel();
 			tableRight.add(previewOptionPanel);
@@ -97,8 +88,7 @@ public class ProjectScreen extends GeneralScreen {
 		InputProcessor processor = new InputMultiplexer(stage(), new InputAdapter() {
 			@Override
 			public boolean keyDown(int keycode) {
-				if (Keys.ESCAPE == keycode) {
-					// 返回欢迎页
+				if (Keys.ESCAPE == keycode) {// 返回欢迎页
 					GlobalData.game.setScreen(new WelcomeScreen());
 				}
 				return super.keyDown(keycode);
@@ -120,7 +110,6 @@ public class ProjectScreen extends GeneralScreen {
 			Gdx.app.error(tag, "can find style class", e);
 			return;
 		}
-
 		// style name list 改变
 		stylePanel.changeStyleType(styleClass);
 

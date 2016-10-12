@@ -31,6 +31,7 @@ public class OptionPanel extends BaseOptionWidget {
 
 		Class<? extends Object> clazz = selectStyleObject.getClass();
 		Field[] fields = ClassReflection.getFields(clazz);
+		Gdx.app.log(tag, "toggle option " + clazz.getSimpleName());
 		for (Field field : fields) {
 			try {
 				field.setAccessible(true);

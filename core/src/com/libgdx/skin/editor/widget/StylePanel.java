@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.libgdx.skin.editor.GlobalData;
+import com.libgdx.skin.editor.property.editor.actor.builder.PropertyEditorBuilder.OnEditorCall;
 import com.libgdx.skin.editor.utils.scene2d.CustomSkin;
 
 /**
@@ -27,7 +28,7 @@ public class StylePanel extends Table {
 	List<String> listStyleNames;
 	Object selectStyleObject;
 
-	public StylePanel(CustomSkin projectSkin) {
+	public StylePanel(CustomSkin projectSkin, OnEditorCall onEditorCall) {
 		super(GlobalData.skin);
 		this.projectSkin = projectSkin;
 
@@ -42,21 +43,20 @@ public class StylePanel extends Table {
 		listStyleNames.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				changeStyleNameSelect();
+				// 改变选择的样式 name
+				String selectStyleName = getSelectStyleName();
+				Gdx.app.debug(tag, "change select style name " + selectStyleName);
+				if (selectStyleName != null) {
+					selectStyleObject = projectSkin.get(selectStyleName, styleClazz);
+				} else {
+					selectStyleObject = null;
+				}
+				// call
+				onEditorCall.call();
 			}
 		});
 		ScrollPane scrollPane = new ScrollPane(listStyleNames, skin);
 		add(scrollPane).expand().fill().row();;
-	}
-
-	/** 改变选择的样式 name */
-	public void changeStyleNameSelect() {
-		String selectStyleName = getSelectStyleName();
-		Gdx.app.debug(tag, "change select style name " + selectStyleName);
-
-		if (selectStyleName != null) {
-			selectStyleObject = projectSkin.get(selectStyleName, styleClazz);
-		}
 	}
 
 	/** 改变 style 类型 */
@@ -70,14 +70,11 @@ public class StylePanel extends Table {
 
 		Array<String> newItems = new Array<String>();
 		if (objectMap == null || objectMap.size == 0) {
-			selectStyleObject = null;
 			listStyleNames.setItems(newItems);
 		} else {
 			newItems.addAll(objectMap.keys().toArray());
 			listStyleNames.setItems(newItems);
-
 			// 默认选中第一个
-			selectStyleObject = newItems.first();
 			listStyleNames.setSelectedIndex(0);
 		}
 	}
