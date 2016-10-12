@@ -29,7 +29,6 @@ import com.libgdx.skin.editor.widget.StylePanel;
 public class ProjectScreen extends GeneralScreen {
 	private static final String tag = ProjectScreen.class.getSimpleName();
 
-	FileHandle project;
 	CustomSkin customSkin;
 
 	StyleBar styleBar;
@@ -39,13 +38,16 @@ public class ProjectScreen extends GeneralScreen {
 	PreviewOptionPanel previewOptionPanel;
 
 	public ProjectScreen(String projectName) {
-		project = GlobalData.getProject(projectName);
+		GlobalData.projectFileHandle = GlobalData.getProject(projectName);
 	}
 
 	@Override
 	public void show() {
 		super.show();
-		customSkin = new CustomSkin(project.child(Res.skinJson.split("/")[1]), new TextureAtlas(project.child(Res.skinAtlas.split("/")[1])));
+		FileHandle projectFileHandle = GlobalData.projectFileHandle;
+		FileHandle skinFile = projectFileHandle.child(Res.skinJson.split("/")[1]);
+		TextureAtlas textureAtlas = new TextureAtlas(projectFileHandle.child(Res.skinAtlas.split("/")[1]));
+		customSkin = new CustomSkin(skinFile, textureAtlas);
 
 		// 根 group
 		Table tableRoot = new Table();

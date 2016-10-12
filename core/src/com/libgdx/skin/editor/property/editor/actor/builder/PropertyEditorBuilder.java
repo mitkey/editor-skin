@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -22,6 +23,7 @@ import com.badlogic.gdx.utils.ObjectMap.Values;
 import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.libgdx.skin.editor.GlobalData;
+import com.libgdx.skin.editor.dialog.picker.BitmapFontPicker;
 import com.libgdx.skin.editor.utils.scene2d.CustomSkin;
 
 /**
@@ -234,8 +236,12 @@ public abstract class PropertyEditorBuilder {
 				buttonStyle.font = font;
 				imageTextButton.setStyle(buttonStyle);
 			}
-
-			// TODO use onEditorCall
+			imageTextButton.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					new BitmapFontPicker(projectSkin, styleObject, field, onEditorCall).show(imageTextButton.getStage());
+				}
+			});
 			return imageTextButton;
 		}
 	}

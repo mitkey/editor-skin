@@ -40,6 +40,7 @@ public final class GlobalData {
 	public static Game game;
 	public static FreeTypeFontGenerator fontGenerator;
 	public static Skin skin;
+	public static FileHandle projectFileHandle;
 
 	private GlobalData() {
 	}
