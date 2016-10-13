@@ -58,7 +58,7 @@ public abstract class BasePickerDialog extends Dialog {
 	@Override
 	protected void result(Object object) {
 		super.result(object);
-		if (!(boolean) object) {
+		if (object != null && !(boolean) object) {
 			hide();
 		}
 	}

@@ -88,7 +88,13 @@ public class Dialogs {
 	public interface OkCancelDialogListener {
 		void ok();
 	}
-
+	// 字母、数字、 _ 过滤
+	public static class InputDialogLetterOrDigitFilter implements TextFieldFilter {
+		@Override
+		public boolean acceptChar(TextField textField, char c) {
+			return Character.isLetterOrDigit(c) || '_' == c;
+		}
+	}
 	// float 型过滤
 	public static class InputDialogFloatFilter implements TextFieldFilter {
 		@Override
