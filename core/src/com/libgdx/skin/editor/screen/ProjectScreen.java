@@ -41,6 +41,7 @@ public class ProjectScreen extends GeneralScreen {
 		@Override
 		public void call() {
 			optionPanel.toggleStyle(customSkin, stylePanel.getSelectStyleObject());
+			previewPanel.updatePreview(customSkin,stylePanel.getSelectStyleObject());
 			// TODO 调用其他 panel 中绘制信息。如 previewPanel 或 previewOptionPanel
 		}
 	};
@@ -63,27 +64,25 @@ public class ProjectScreen extends GeneralScreen {
 		stage().addActor(tableRoot);
 
 		// 样式类型切换 bar
-		styleBar = new StyleBar(this);
-		tableRoot.add(styleBar).expandX().fillX().top().colspan(3).row();
+		tableRoot.add(styleBar = new StyleBar(this)).expandX().fillX().top().colspan(3).row();
 		// 选项面板
-		optionPanel = new OptionPanel(onEditorCall);
-		tableRoot.add(optionPanel).expandY().fillY().left().width(420);
+		tableRoot.add(optionPanel = new OptionPanel(onEditorCall)).expandY().fillY().left().width(420);
 		// 预览面板
-		previewPanel = new PreviewPanel();
-		tableRoot.add(previewPanel).expand().fill();
+		tableRoot.add(previewPanel = new PreviewPanel()).expand().fill();
 		// 右边上下两部分
-		{
-			Table tableRight = new Table();
-			tableRight.defaults().expand().fill().uniform();
-			tableRoot.add(tableRight).width(GlobalData.WIDTH / 4).expandY().fillY().right();
-			// 样式面板
-			stylePanel = new StylePanel(customSkin, onEditorCall);
-			tableRight.add(stylePanel).row();
-			// 预览选项面板
-			previewOptionPanel = new PreviewOptionPanel();
-			tableRight.add(previewOptionPanel);
-		}
+		Table tableRight = new Table();
+		tableRight.defaults().expand().fill().uniform();
+		tableRoot.add(tableRight).width(GlobalData.WIDTH / 4).expandY().fillY().right();
+		// 样式面板
+		tableRight.add(stylePanel = new StylePanel(customSkin, onEditorCall)).row();
+		// 预览选项面板
+		tableRight.add(previewOptionPanel = new PreviewOptionPanel());
 
+		setInputProcessor();
+		toggleStyle();
+	}
+
+	private void setInputProcessor() {
 		// 用户输入监听
 		InputProcessor processor = new InputMultiplexer(stage(), new InputAdapter() {
 			@Override
@@ -95,8 +94,6 @@ public class ProjectScreen extends GeneralScreen {
 			}
 		});
 		Gdx.input.setInputProcessor(processor);
-
-		toggleStyle();
 	}
 
 	public void toggleStyle() {
@@ -112,8 +109,6 @@ public class ProjectScreen extends GeneralScreen {
 		}
 		// style name list 改变
 		stylePanel.changeStyleType(styleClass);
-
-		// TODO
 	}
 
 	@Override
