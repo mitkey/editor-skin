@@ -2,7 +2,9 @@ package com.libgdx.skin.editor.utils.scene2d;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.libgdx.skin.editor.GlobalData;
 
@@ -14,6 +16,7 @@ import com.libgdx.skin.editor.GlobalData;
  */
 public abstract class GeneralScreen extends ScreenAdapter {
 
+	long startTime = TimeUtils.millis();
 	Stage stage;
 
 	@Override
@@ -30,10 +33,15 @@ public abstract class GeneralScreen extends ScreenAdapter {
 		stage.draw();
 		stage.act(delta);
 
-		int fpsNum = Gdx.graphics.getFramesPerSecond();
-		float heapNum = Gdx.app.getJavaHeap() * 1f / 1024 / 1024;
-		float nativeNum = Gdx.app.getNativeHeap() * 1f / 1024 / 1024;
-		GlobalData.onMonitor.change(fpsNum, heapNum, nativeNum);
+		if (TimeUtils.millis() - startTime > 10) {
+			int fpsNum = Gdx.graphics.getFramesPerSecond();
+			float heapNum = Gdx.app.getJavaHeap() * 1f / 1024 / 1024;
+			float nativeNum = Gdx.app.getNativeHeap() * 1f / 1024 / 1024;
+			SpriteBatch spriteBatch = (SpriteBatch) stage.getBatch();
+			
+			GlobalData.onMonitor.change(fpsNum, heapNum, nativeNum, spriteBatch.renderCalls);
+			startTime = TimeUtils.millis();
+		}
 	}
 
 	@Override

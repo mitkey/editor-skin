@@ -101,7 +101,7 @@ public final class GlobalData {
 	}
 
 	public static interface OnMonitor {
-		void change(int fpsNum, float heapNum, float nativeNum);
+		void change(int fpsNum, float heapNum, float nativeNum,int renderCalls);
 	}
 
 }

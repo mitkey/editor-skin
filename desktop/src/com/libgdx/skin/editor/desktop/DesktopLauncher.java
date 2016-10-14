@@ -31,12 +31,12 @@ public class DesktopLauncher {
 		config.samples = 8;// 抗锯齿
 		config.addIcon("icon.png", FileType.Internal);
 		GlobalData.onMonitor = new OnMonitor() {
-			String format = "%s --------> FPS:%s    H:%sm    N:%sm";
+			String format = "%s --------> FPS:%s    H:%sm    N:%sm    RenderCalls:%s";
 			@Override
-			public void change(int fpsNum, float heapNum, float nativeNum) {
+			public void change(int fpsNum, float heapNum, float nativeNum, int renderCalls) {
 				heapNum = StrUtil.toLimitDecimalFloat(heapNum, 2);
 				nativeNum = StrUtil.toLimitDecimalFloat(nativeNum, 2);
-				Display.setTitle(String.format(format, config.title, fpsNum, heapNum, nativeNum));
+				Display.setTitle(String.format(format, config.title, fpsNum, heapNum, nativeNum, renderCalls));
 			}
 		};
 
